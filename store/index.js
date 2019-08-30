@@ -7,7 +7,8 @@ import shop from '@/api/shop'
  */
 export const state = () => ({
   products: [],
-  cart: [] // id, quantity
+  cart: [], // id, quantity
+  checkoutStatus: null
 })
 
 /**
@@ -64,16 +65,30 @@ export const actions = {
     })
   },
 
-  addProductToCart(context, product) {
+  addProductToCart({ state, commit }, product) {
     if (product.inventory > 0) {
-      const cartItem = context.state.cart.find((item) => item.id === product.id)
+      const cartItem = state.cart.find((item) => item.id === product.id)
       if (!cartItem) {
-        context.commit('pushProductToCart', product.id)
+        commit('pushProductToCart', product.id)
       } else {
-        context.commit('incrementItemQuantity', cartItem)
+        commit('incrementItemQuantity', cartItem)
       }
-      context.commit('decrementProductInventory', product)
+      commit('decrementProductInventory', product)
     }
+  },
+
+  checkout({ state, commit }) {
+    // make an "api" call to buy, which will succeed or fail
+    shop.buyProducts(
+      state.cart,
+      () => {
+        commit('emptyCart')
+        commit('setCheckoutStatus', 'success')
+      },
+      () => {
+        commit('setCheckoutStatus', 'fail')
+      }
+    )
   }
 }
 
@@ -104,5 +119,13 @@ export const mutations = {
 
   decrementProductInventory(state, product) {
     product.inventory--
+  },
+
+  setCheckoutStatus(state, status) {
+    state.checkoutStatus = status
+  },
+
+  emptyCart(state) {
+    state.cart = []
   }
 }
