@@ -4,7 +4,8 @@
     <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif" alt="Loading…" />
     <ul v-else>
       <li v-for="product in availableProducts" :key="product.id">
-        {{ product.title }} - {{ product.price }} - {{ product.inventory }}
+        {{ product.title }} - {{ product.price | currency }} -
+        {{ product.inventory }}
         <button @click="addProductToCart(product)">Add to cart</button>
       </li>
     </ul>
@@ -27,8 +28,13 @@ export default {
     }
   },
   created() {
+    // show the spinner
     this.loading = true
-    this.$store.dispatch('fetchProducts').then(() => (this.loading = false))
+    this.$store
+      // call the `fetchProducts` action to load products into state
+      .dispatch('fetchProducts')
+      // when the promise returns, hide the spinner
+      .then(() => (this.loading = false))
   },
   methods: {
     addProductToCart(product) {
@@ -37,5 +43,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
