@@ -11,10 +11,13 @@ export const state = () => ({
  * Getters
  *
  * similar to computed properties
+ * track their dependencies and automatically update when they change
+ * vuex will automatically pass state as the first parameter
+ * vuex will pass all existing getters as the second parameter
  */
 export const getters = {
-  productsCount() {
-    // ...
+  availableProducts(state, getters) {
+    return state.products.filter((product) => product.inventory > 0)
   }
 }
 
