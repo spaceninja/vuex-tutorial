@@ -19,16 +19,16 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      checkoutStatus: 'checkoutStatus'
+      checkoutStatus: (state) => state.cart.checkoutStatus
     }),
     ...mapGetters({
-      products: 'cartProducts',
-      total: 'cartTotal'
+      products: 'cart/cartProducts',
+      total: 'cart/cartTotal'
     })
   },
   methods: {
     ...mapActions({
-      checkout: 'checkout'
+      checkout: 'cart/checkout'
     })
   }
 }
