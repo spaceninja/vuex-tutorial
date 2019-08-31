@@ -1,10 +1,12 @@
 # vuex-tutorial
 
-> My doozie Nuxt.js project
+> Following the Vue School "Vuex for Everyone" course
+
+https://vueschool.io/courses/vuex-for-everyone
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ npm run install
 
