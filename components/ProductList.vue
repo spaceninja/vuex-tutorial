@@ -28,19 +28,24 @@ export default {
   },
   computed: {
     ...mapState({
+      // inject global state into local state
       allProducts: (state) => state.products.items
     }),
     ...mapGetters({
+      // productIsInStock is actually a function stored in a vuex getter
       productIsInStock: 'products/productIsInStock'
     })
   },
   created() {
+    // On page load, run the `fetchProducts` action to load products into global state
     this.loading = true
     this.fetchProducts().then(() => (this.loading = false))
   },
   methods: {
     ...mapActions({
+      // vuex action to simulate loading products from an api into global state
       fetchProducts: 'products/fetchProducts',
+      // vuex action to push a product into the cart in global state
       addProductToCart: 'cart/addProductToCart'
     })
   }

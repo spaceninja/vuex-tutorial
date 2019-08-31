@@ -19,15 +19,19 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapState({
+      // status message set when checkout completes
       checkoutStatus: (state) => state.cart.checkoutStatus
     }),
     ...mapGetters({
+      // sync the products in the cart in global state into local state
       products: 'cart/cartProducts',
+      // calculate the total cost of items in the cart
       total: 'cart/cartTotal'
     })
   },
   methods: {
     ...mapActions({
+      // vuex action to simulate an api call to process a sale
       checkout: 'cart/checkout'
     })
   }
