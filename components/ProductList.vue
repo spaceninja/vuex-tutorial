@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -25,29 +27,22 @@ export default {
     }
   },
   computed: {
-    allProducts() {
-      return this.$store.state.products
-    },
-    availableProducts() {
-      return this.$store.getters.availableProducts
-    },
-    productIsInStock() {
-      return this.$store.getters.productIsInStock
-    }
+    ...mapState({
+      allProducts: 'products'
+    }),
+    ...mapGetters({
+      productIsInStock: 'productIsInStock'
+    })
   },
   created() {
-    // show the spinner
     this.loading = true
-    this.$store
-      // call the `fetchProducts` action to load products into state
-      .dispatch('fetchProducts')
-      // when the promise returns, hide the spinner
-      .then(() => (this.loading = false))
+    this.fetchProducts().then(() => (this.loading = false))
   },
   methods: {
-    addProductToCart(product) {
-      this.$store.dispatch('addProductToCart', product)
-    }
+    ...mapActions({
+      fetchProducts: 'fetchProducts',
+      addProductToCart: 'addProductToCart'
+    })
   }
 }
 </script>
