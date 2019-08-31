@@ -42,6 +42,10 @@ export const getters = {
       (total, product) => total + product.price * product.quantity,
       0
     )
+  },
+
+  productIsInStock() {
+    return (product) => product.inventory > 0
   }
 }
 
@@ -65,8 +69,8 @@ export const actions = {
     })
   },
 
-  addProductToCart({ state, commit }, product) {
-    if (product.inventory > 0) {
+  addProductToCart({ state, commit, getters }, product) {
+    if (getters.productIsInStock(product)) {
       const cartItem = state.cart.find((item) => item.id === product.id)
       if (!cartItem) {
         commit('pushProductToCart', product.id)

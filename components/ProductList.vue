@@ -3,10 +3,15 @@
     <h1>Product List</h1>
     <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif" alt="Loading…" />
     <ul v-else>
-      <li v-for="product in availableProducts" :key="product.id">
+      <li v-for="product in allProducts" :key="product.id">
         {{ product.title }} - {{ product.price | currency }} -
         {{ product.inventory }}
-        <button @click="addProductToCart(product)">Add to cart</button>
+        <button
+          :disabled="!productIsInStock(product)"
+          @click="addProductToCart(product)"
+        >
+          Add to cart
+        </button>
       </li>
     </ul>
   </div>
@@ -25,6 +30,9 @@ export default {
     },
     availableProducts() {
       return this.$store.getters.availableProducts
+    },
+    productIsInStock() {
+      return this.$store.getters.productIsInStock
     }
   },
   created() {
